@@ -678,7 +678,7 @@ int main(int argc, char** argv)
         }
 
         char dcraw_cmd[1000];
-        snprintf(dcraw_cmd, sizeof(dcraw_cmd), "dcraw -v -i -t 0 \"%s\"", filename);
+        snprintf(dcraw_cmd, sizeof(dcraw_cmd), "LC_ALL=C dcraw -v -i -t 0 \"%s\"", filename);
         FILE* t = popen(dcraw_cmd, "r");
         CHECK(t, "%s", filename);
         
@@ -716,7 +716,7 @@ int main(int argc, char** argv)
         int left_margin = raw_width - out_width;
         int top_margin = raw_height - out_height;
 
-        snprintf(dcraw_cmd, sizeof(dcraw_cmd), "dcraw -4 -E -c -t 0 \"%s\"", filename);
+        snprintf(dcraw_cmd, sizeof(dcraw_cmd), "LC_ALL=C dcraw -4 -E -c -t 0 \"%s\"", filename);
         FILE* fp = popen(dcraw_cmd, "r");
         CHECK(fp, "%s", filename);
         #ifdef _O_BINARY
@@ -2575,7 +2575,7 @@ static int hdr_interpolate()
                 for (int x = 2; x < w-2; x ++)
                     raw_set_pixel_20to16(x, y, gray[x + y*w]);
             save_debug_dng("edges.dng");
-            system("dcraw -d -r 1 1 1 1 edges.dng");
+            system("LC_ALL=C dcraw -d -r 1 1 1 1 edges.dng");
             /* best viewed at 400% with nearest neighbour interpolation (no filtering) */
 
             for (int y = 0; y < h; y ++)
@@ -2588,7 +2588,7 @@ static int hdr_interpolate()
                 }
             }
             save_debug_dng("edge-map.dng");
-            system("dcraw -d -r 1 1 1 1 edge-map.dng");
+            system("LC_ALL=C dcraw -d -r 1 1 1 1 edge-map.dng");
             printf("debug exit\n");
             exit(1);
         }

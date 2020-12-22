@@ -1354,7 +1354,7 @@ static int identify_rggb_or_gbrg()
         fprintf(f, "hold on; for i = 1:4, for j = i+1:4, plot(hists(:,i), hists(:,j), 'color', [0.5 0.5 0.5]); end; end;\n");
         fprintf(f, "plot(hists(:,2), hists(:,3), 'r', hists(:,1), hists(:,4), 'g');\n");
         fclose(f);
-        if(system("octave --persist rggb.m"));
+        system("octave --persist rggb.m");
     }
 
     /* compare cdf's */
@@ -1492,7 +1492,7 @@ static int identify_bright_and_dark_fields(int rggb)
         fprintf(f, "plot(ref, levels(:,1) - off(1), ref, levels(:,2) - off(2), ref, levels(:,3) - off(3), ref, levels(:,4) - off(4));\n");
         fprintf(f, "legend('0', '1', '2', '3');\n");
         fclose(f);
-        if(system("octave --persist bddb.m"));
+        system("octave --persist bddb.m");
     }
     
     for (int i = 0; i < 4; i++)
@@ -1768,7 +1768,7 @@ static int match_exposures(double* corr_ev, int* white_darkened)
         fprintf(f, "plot([%d %d]*a+b, [%d %d], 'or', 'markersize', 3, 'linewidth', 8);\n", bmed, 0, dmed, 0);
         fprintf(f, "print -dpng iso-curve.png\n");
         fclose(f);
-        if(system("octave --persist iso-curve.m"));
+        system("octave --persist iso-curve.m");
     }
     free(dark);
     free(bright);
@@ -2241,7 +2241,7 @@ static int hdr_interpolate()
         fprintf(f, "print -dpng fullres-curve.png\n");
         fclose(f);
         
-        if(system("octave --persist fullres-curve.m"));
+        system("octave --persist fullres-curve.m");
     }
 
     //~ printf("Exposure matching...\n");
@@ -2575,7 +2575,7 @@ static int hdr_interpolate()
                 for (int x = 2; x < w-2; x ++)
                     raw_set_pixel_20to16(x, y, gray[x + y*w]);
             save_debug_dng("edges.dng");
-            if(system("dcraw -d -r 1 1 1 1 edges.dng"));
+            system("dcraw -d -r 1 1 1 1 edges.dng");
             /* best viewed at 400% with nearest neighbour interpolation (no filtering) */
 
             for (int y = 0; y < h; y ++)
@@ -2588,7 +2588,7 @@ static int hdr_interpolate()
                 }
             }
             save_debug_dng("edge-map.dng");
-            if(system("dcraw -d -r 1 1 1 1 edge-map.dng"));
+            system("dcraw -d -r 1 1 1 1 edge-map.dng");
             printf("debug exit\n");
             exit(1);
         }
@@ -2867,7 +2867,7 @@ static int hdr_interpolate()
         fprintf(f, "print -dpng mix-curve.png\n");
         fclose(f);
         
-        if(system("octave --persist mix-curve.m"));
+        system("octave --persist mix-curve.m");
     }
     
     for (int y = 0; y < h; y ++)
@@ -3351,7 +3351,7 @@ static int hdr_interpolate()
             fprintf(f, "yb = log2(max(1, sb - %d));\n", black/16);
             fprintf(f, "plot(x, yr, 'r', x, yg, 'g', x, yb, 'b')\n");
             fclose(f);
-            if(system("octave --persist soft-film.m"));
+            system("octave --persist soft-film.m");
         }
 
         for (int y = 0; y < h; y++)
@@ -3695,7 +3695,7 @@ static void white_balance_gray(float* red_balance, float* blue_balance, int meth
         fprintf(f, "set(gca,'position',[0 0.04 1 0.96])\n");
         fprintf(f, "print -dpng wb.png\n");
         fclose(f);
-        if(system("octave wb.m"));
+        system("octave wb.m");
     }
     
     *red_balance = powf(2, (float) -(rbest - WB_ORIGIN) / WB_EV);

@@ -880,7 +880,7 @@ void amaze_demosaic_RT(
 
 					//if both agree on interpolation direction, choose the one with strongest directional discrimination;
 					//otherwise, choose the u/d and l/r difference fluctuation weights
-					if ((0.5-varwt)*(0.5-diffwt)>0 && fabsf(0.5-diffwt)<fabsf(0.5-varwt)) {hvwt[indx>>1]=varwt;} else {hvwt[indx>>1]=diffwt;}
+					if ((0.5-varwt)*(0.5-diffwt)>0 && fabs(0.5-diffwt)<fabs(0.5-varwt)) {hvwt[indx>>1]=varwt;} else {hvwt[indx>>1]=diffwt;}
 
 					//hvwt[indx]=varwt;
 				}
@@ -1203,7 +1203,7 @@ void amaze_demosaic_RT(
 
 					//first ask if one gets more directional discrimination from nearby B/R sites
 					pmwtalt = xdivf(pmwt[(indx-m1)>>1]+pmwt[(indx+p1)>>1]+pmwt[(indx-p1)>>1]+pmwt[(indx+m1)>>1],2);
-					if (fabsf(0.5-pmwt[indx1])<fabsf(0.5-pmwtalt)) {pmwt[indx1]=pmwtalt;}//a better result was obtained from the neighbors
+					if (fabs(0.5-pmwt[indx1])<fabs(0.5-pmwtalt)) {pmwt[indx1]=pmwtalt;}//a better result was obtained from the neighbors
 					
 					rbint[indx1] = xdiv2f(cfa[indx] + rbm[indx1]*(1.0f-pmwt[indx1]) + rbp[indx1]*pmwt[indx1]);//this is R+B, interpolated
 				}

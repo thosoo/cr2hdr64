@@ -95,32 +95,6 @@ const struct {
     { NULL, 0, 0, { 0,0,0,0,0,0,0,0,0 } },
 };
 
-static const struct {
-    unsigned short id;
-    char model[20];
-} unique[] = {
-    { 0x168, "EOS 10D" },    { 0x001, "EOS-1D" },
-    { 0x175, "EOS 20D" },    { 0x174, "EOS-1D Mark II" },
-    { 0x234, "EOS 30D" },    { 0x232, "EOS-1D Mark II N" },
-    { 0x190, "EOS 40D" },    { 0x169, "EOS-1D Mark III" },
-    { 0x261, "EOS 50D" },    { 0x281, "EOS-1D Mark IV" },
-    { 0x287, "EOS 60D" },    { 0x167, "EOS-1DS" },
-    { 0x325, "EOS 70D" },
-    { 0x170, "EOS 300D" },   { 0x188, "EOS-1Ds Mark II" },
-    { 0x176, "EOS 450D" },   { 0x215, "EOS-1Ds Mark III" },
-    { 0x189, "EOS 350D" },   { 0x324, "EOS-1D C" },
-    { 0x236, "EOS 400D" },   { 0x269, "EOS-1D X" },
-    { 0x252, "EOS 500D" },   { 0x213, "EOS 5D" },
-    { 0x270, "EOS 550D" },   { 0x218, "EOS 5D Mark II" },
-    { 0x286, "EOS 600D" },   { 0x285, "EOS 5D Mark III" },
-    { 0x301, "EOS 650D" },   { 0x302, "EOS 6D" },
-    { 0x326, "EOS 700D" },   { 0x250, "EOS 7D" },
-    { 0x254, "EOS 1000D" },
-    { 0x288, "EOS 1100D" },
-    { 0x346, "EOS 100D" },
-    { 0x331, "EOS M" },
-};
-
 static int* trans_to_calib(const short* trans)
 {
     int* calib = calloc(18, sizeof(int));

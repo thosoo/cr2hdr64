@@ -1,10 +1,15 @@
 # Makefile for the cr2hdr software
 
+#---
+SRC_DIR=.
+HOSTCC=gcc
+#---
+
 CR2HDR_BIN=cr2hdr
-HOSTCC=$(HOST_CC)
-CR2HDR_CFLAGS=-m32 -mno-ms-bitfields -O2 -Wall -I$(SRC_DIR) -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -msse -msse2 -std=gnu99
-CR2HDR_LDFLAGS=-lm -m32 
-CR2HDR_DEPS=$(SRC_DIR)/chdk-dng.c dcraw-bridge.c exiftool-bridge.c adobedng-bridge.c amaze_demosaic_RT.c dither.c timing.c kelvin.c
+
+CR2HDR_CFLAGS= -mno-ms-bitfields -O2 -g -Wall -I$(SRC_DIR) -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -msse -msse2 -std=gnu99
+CR2HDR_LDFLAGS=-lm
+CR2HDR_DEPS=chdk-dng.c dcraw-bridge.c exiftool-bridge.c adobedng-bridge.c amaze_demosaic_RT.c dither.c timing.c kelvin.c
 HOST=host
 
 # Find the latest version of exiftool
@@ -16,13 +21,13 @@ ifdef CROSS
 endif
 
 $(CR2HDR_BIN): cr2hdr.c $(CR2HDR_DEPS) $(MODULE_STRINGS)
-	$(call build,$(notdir $(HOSTCC)),$(HOSTCC) $(CR2HDR_CFLAGS) cr2hdr.c $(CR2HDR_DEPS) -o $@ $(CR2HDR_LDFLAGS))
+	$(HOSTCC) $(CR2HDR_CFLAGS) cr2hdr.c $(CR2HDR_DEPS) -o $@ $(CR2HDR_LDFLAGS)
 
 $(CR2HDR_BIN).exe: cr2hdr.c $(CR2HDR_DEPS) $(MODULE_STRINGS)
 	CROSS=1 $(MAKE) $@
 
 clean::
-	$(call rm_files, cr2hdr cr2hdr.exe dcraw dcraw.c dcraw.exe exiftool.exe exiftool.tar.gz exiftool exiftool.zip cr2hdr.zip cr2hdr-win.zip cr2hdr-win_exiftool-perl-script.zip)
+	rm -f cr2hdr cr2hdr.exe dcraw dcraw.c dcraw.exe exiftool.exe exiftool.tar.gz exiftool exiftool.zip cr2hdr.zip cr2hdr-win.zip cr2hdr-win_exiftool-perl-script.zip
 	rm -rf lib
 
 dcraw.c:

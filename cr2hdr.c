@@ -39,6 +39,10 @@ static int is_bright[4];
 #include <fcntl.h>
 #include <limits.h>
 
+#ifndef M_PI 
+    #define M_PI 3.14159265358979323846 
+#endif 
+
 // #include "../../src/raw.h"
 // #include "../../src/chdk-dng.h"
 #include "raw.h"

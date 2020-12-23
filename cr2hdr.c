@@ -40,8 +40,8 @@ static int is_bright[4];
 #include <limits.h>
 #include <assert.h>
 
-#include "../../src/raw.h"
-#include "../../src/chdk-dng.h"
+#include "raw.h"
+#include "chdk-dng.h"
 #include "qsort.h"  /* much faster than standard C qsort */
 
 #include "wirth.h"  /* fast median, generic implementation (also kth_smallest) */
@@ -55,9 +55,9 @@ static int is_bright[4];
 #include "kelvin.h"
 
 #define MODULE_STRINGS_PREFIX dual_iso_strings
-#include "../module_strings_wrapper.h"
-#include "module_strings.h"
-MODULE_STRINGS()
+// #include "../module_strings_wrapper.h"
+// #include "module_strings.h"
+// MODULE_STRINGS()
 
 /** Command-line interface */
 

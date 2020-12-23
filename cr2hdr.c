@@ -2173,7 +2173,7 @@ int edge_interp(int dir, float** plane, int s, int* squeezed, int x, int y, int*
 int raw2ev[1<<20];   /* EV x EV_RESOLUTION */
 int ev2raw_0[24*EV_RESOLUTION];
 
-static int hdr_interpolate()
+int hdr_interpolate()
 {
     int w = raw_info.width;
     int h = raw_info.height;

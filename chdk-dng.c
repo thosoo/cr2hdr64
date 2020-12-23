@@ -615,7 +615,7 @@ static void create_dng_header(struct raw_info * raw_info){
                 {
                     if (ifd_list[j].entry[i].type & T_PTR)
                     {
-                        add_to_buf((void*)ifd_list[j].entry[i].offset, sizeof(int));
+                        add_to_buf((void*)(uintptr_t)ifd_list[j].entry[i].offset, sizeof(int));
                     }
                     else
                     {
@@ -644,7 +644,7 @@ static void create_dng_header(struct raw_info * raw_info){
                 size_ext=get_type_size(ifd_list[j].entry[i].type)*ifd_list[j].entry[i].count;
                 if (size_ext>4)
                 {
-                    add_to_buf((void*)ifd_list[j].entry[i].offset, size_ext);
+                    add_to_buf((void*)(uintptr_t)ifd_list[j].entry[i].offset, size_ext);
                     if (size_ext&1) add_val_to_buf(0, 1);
                 }
             }

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "../../src/raw.h"
+#include "raw.h"
 #include "dcraw-bridge.h"
 #include "kelvin.h"
 

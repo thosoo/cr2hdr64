@@ -2169,6 +2169,10 @@ int edge_interp(int dir, float** plane, int s, int* squeezed, int x, int y, int*
     return pi;
 }
 
+/* for fast EV - raw conversion */
+int raw2ev[1<<20];   /* EV x EV_RESOLUTION */
+int ev2raw_0[24*EV_RESOLUTION];
+
 static int hdr_interpolate()
 {
     int w = raw_info.width;
@@ -2208,9 +2212,7 @@ static int hdr_interpolate()
     white_bright *= 64;
     raw_info.white_level = white;
 
-    /* for fast EV - raw conversion */
-    static int raw2ev[1<<20];   /* EV x EV_RESOLUTION */
-    static int ev2raw_0[24*EV_RESOLUTION];
+
     
     /* handle sub-black values (negative EV) */
     int* ev2raw = ev2raw_0 + 10*EV_RESOLUTION;

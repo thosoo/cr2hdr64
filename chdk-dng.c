@@ -420,7 +420,7 @@ static void create_dng_header(struct raw_info * raw_info){
         {0x103,  T_SHORT,      1,  1},                                 // Compression: Uncompressed
         {0x106,  T_SHORT,      1,  2},                                 // PhotometricInterpretation: RGB
         {0x10E,  T_ASCII,      sizeof(dng_image_desc), (uintptr_t)dng_image_desc},               // ImageDescription
-        {0x10F,  T_ASCII,      sizeof(CAM_MAKE), (int)CAM_MAKE},       // Make
+        {0x10F,  T_ASCII,      sizeof(CAM_MAKE), (uintptr_t)CAM_MAKE},       // Make
         {0x110,  T_ASCII,      32, (uintptr_t)cam_name},                     // Model: Filled at header generation.
         {0x111,  T_LONG,       1,  0},                                 // StripOffsets: Offset
         {0x112,  T_SHORT,      1,  1},                                 // Orientation: 1 - 0th row is top, 0th column is left

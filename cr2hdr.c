@@ -1267,8 +1267,6 @@ static void compute_black_noise(int x1, int x2, int y1, int y2, int dx, int dy, 
     *out_stdev = stdev;
 }
 
-static double raw2ev[16384];
-
 /* quick check to see if this looks like a HDR frame */
 static int hdr_check()
 {
@@ -1281,7 +1279,7 @@ static int hdr_check()
     int w = raw_info.width;
     int h = raw_info.height;
 
-
+    static double raw2ev[16384];
     
     for (int i = 0; i < 16384; i++)
         raw2ev[i] = log2(MAX(1, i - black));
@@ -2031,43 +2029,6 @@ static int soft_film_bakedwb(double raw, double exposure, int in_black, int in_w
     return round(raw_adjusted + fast_randn05());
 }
 
-static int edge_interp(int dir, int* squeezed, float** plane, int x, int y, int s)
-                    {
-                                        /* define edge directions for interpolation */
-                        struct xy { int x; int y; };
-                        const struct
-                        {
-                            struct xy ack;      /* verification pixel near a */
-                            struct xy a;        /* interpolation pixel from the nearby line: normally (0,s) but also (1,s) or (-1,s) */
-                            struct xy b;        /* interpolation pixel from the other line: normally (0,-2s) but also (1,-2s), (-1,-2s), (2,-2s) or (-2,-2s) */
-                            struct xy bck;      /* verification pixel near b */
-                        }
-                        edge_directions[] = {       /* note: all y coords should be multiplied by s */
-                            //~ { {-6,2}, {-3,1}, { 6,-2}, { 9,-3} },     /* almost horizontal (little or no improvement) */
-                            { {-4,2}, {-2,1}, { 4,-2}, { 6,-3} },
-                            { {-3,2}, {-1,1}, { 3,-2}, { 4,-3} },
-                            { {-2,2}, {-1,1}, { 2,-2}, { 3,-3} },     /* 45-degree diagonal */
-                            { {-1,2}, {-1,1}, { 1,-2}, { 2,-3} },
-                            { {-1,2}, { 0,1}, { 1,-2}, { 1,-3} },
-                            { { 0,2}, { 0,1}, { 0,-2}, { 0,-3} },     /* vertical, preferred; no extra confirmations needed */
-                            { { 1,2}, { 0,1}, {-1,-2}, {-1,-3} },
-                            { { 1,2}, { 1,1}, {-1,-2}, {-2,-3} },
-                            { { 2,2}, { 1,1}, {-2,-2}, {-3,-3} },     /* 45-degree diagonal */
-                            { { 3,2}, { 1,1}, {-3,-2}, {-4,-3} },
-                            { { 4,2}, { 2,1}, {-4,-2}, {-6,-3} },
-                            //~ { { 6,2}, { 3,1}, {-6,-2}, {-9,-3} },     /* almost horizontal */
-                        };
-                        int dxa = edge_directions[dir].a.x;
-                        int dya = edge_directions[dir].a.y * s;
-                        int pa = COERCE((int) plane[(int) squeezed[y+dya]][x+dxa], 0, (int) 0xFFFFF);
-                        int dxb = edge_directions[dir].b.x;
-                        int dyb = edge_directions[dir].b.y * s;
-                        int pb = COERCE((int) plane[(int) squeezed[y+dyb]][x+dxb], 0, (int) 0xFFFFF);
-                        int pi = (raw2ev[pa] * 2 + raw2ev[pb]) / 3;
-                        
-                        return pi;
-                    }
-
 static int hdr_interpolate()
 {
     int w = raw_info.width;
@@ -2617,10 +2578,24 @@ static int hdr_interpolate()
 
                     int dir = edge_direction[x + y*w];
                     
+                    int edge_interp(int dir)
+                    {
+                        
+                        int dxa = edge_directions[dir].a.x;
+                        int dya = edge_directions[dir].a.y * s;
+                        int pa = COERCE((int)plane[squeezed[y+dya]][x+dxa], 0, 0xFFFFF);
+                        int dxb = edge_directions[dir].b.x;
+                        int dyb = edge_directions[dir].b.y * s;
+                        int pb = COERCE((int)plane[squeezed[y+dyb]][x+dxb], 0, 0xFFFFF);
+                        int pi = (raw2ev[pa] * 2 + raw2ev[pb]) / 3;
+                        
+                        return pi;
+                    }
+                    
                     /* vary the interpolation direction and average the result (reduces aliasing) */
-                    int pi0 = edge_interp(dir,squeezed, plane, x, y, s);
-                    int pip = edge_interp(MIN(dir+1, COUNT(edge_directions)-1),squeezed, plane, x, y, s);
-                    int pim = edge_interp(MAX(dir-1,0), squeezed, plane, x, y, s);
+                    int pi0 = edge_interp(dir);
+                    int pip = edge_interp(MIN(dir+1, COUNT(edge_directions)-1));
+                    int pim = edge_interp(MAX(dir-1,0));
                     
                     interp[x   + y * w] = ev2raw[(2*pi0+pip+pim)/4];
                     native[x   + y * w] = raw_get_pixel32(x, y);

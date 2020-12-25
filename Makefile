@@ -27,9 +27,21 @@ $(CR2HDR_BIN): ${SRC}/cr2hdr.c $(CR2HDR_DEPS) $(MODULE_STRINGS)
 $(CR2HDR_BIN).exe: cr2hdr.c $(CR2HDR_DEPS) $(MODULE_STRINGS)
 	CROSS=1 $(MAKE) $@
 
-clean::
+clean: 
 	rm -f cr2hdr cr2hdr.exe dcraw dcraw.c dcraw.exe exiftool.exe exiftool.tar.gz exiftool exiftool.zip cr2hdr.zip cr2hdr-win.zip cr2hdr-win_exiftool-perl-script.zip
 	rm -rf lib
+	
+ifeq ($(PREFIX),)
+    PREFIX := /usr/local
+endif
+
+install: cr2hdr
+	install	-d	$(DESTDIR)/$(PREFIX)/bin
+	install	-m	755	cr2hdr	$(DESTDIR)$(PREFIX)/bin/
+
+uninstall: cr2hdr
+	rm $(DESTDIR)$(PREFIX)/bin/cr2hdr
+
 
 dcraw.c:
 	wget https://www.cybercom.net/~dcoffin/dcraw/dcraw.c

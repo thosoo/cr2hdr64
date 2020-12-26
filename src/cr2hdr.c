@@ -667,7 +667,7 @@ int main(int argc, char** argv)
         }
 
         char dcraw_cmd[1000];
-        snprintf(dcraw_cmd, sizeof(dcraw_cmd), "dcraw -v -i -t 0 \"%s\"", filename);
+        snprintf(dcraw_cmd, sizeof(dcraw_cmd), "LC_ALL=C dcraw -v -i -t 0 \"%s\"", filename);
         FILE* t = popen(dcraw_cmd, "r");
         CHECK(t, "%s", filename);
         
@@ -705,7 +705,7 @@ int main(int argc, char** argv)
         int left_margin = raw_width - out_width;
         int top_margin = raw_height - out_height;
 
-        snprintf(dcraw_cmd, sizeof(dcraw_cmd), "dcraw -4 -E -c -t 0 \"%s\"", filename);
+        snprintf(dcraw_cmd, sizeof(dcraw_cmd), "LC_ALL=C dcraw -4 -E -c -t 0 \"%s\"", filename);
         FILE* fp = popen(dcraw_cmd, "r");
         CHECK(fp, "%s", filename);
         #ifdef _O_BINARY
